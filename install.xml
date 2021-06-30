@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<name>Упрощенный заказ [Custom Quick Checkout]</name>
+	<code>quickcheckout_oc3</code>
+	<version>1.9</version>
+	<author>opencart3x.ru</author>
+	<link>https://opencart3x.ru</link>
+	<file path="catalog/controller/checkout/cart.php">
+		<operation>
+			<search><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[		
+			if ($this->cart->hasProducts() && $this->config->get('quickcheckout_skip_cart')){
+				$this->response->redirect($this->url->link('extension/quickcheckout/checkout'));
+			}
+            ]]></add>
+		</operation>
+	</file>
+  	<file path="catalog/model/setting/extension.php">
+		<operation>
+			<search trim="true" index="0"><![CDATA[
+				SELECT * FROM " . DB_PREFIX . "extension WHERE `type` =
+			]]></search>
+			<add position="after" trim="false" offset="0"><![CDATA[
+				if ($type == 'payment' && isset($this->session->data['shipping_method']['code']) && $this->config->get('quickcheckout_shipping_reload')) {
+					$payments = $query->rows;
+
+					$rules = array();
+
+					foreach ($this->config->get('quickcheckout_payment2shipping_shippings') as $shippings) {
+						if (strpos($this->session->data['shipping_method']['code'], $shippings['shipping']) === 0) {
+							$rules[] = $shippings['payment'];
+						}
+					}
+
+					if (!empty($rules)) {
+						foreach ($payments as $idx => $payment) {
+							if (!in_array($payment['code'], $rules)) {
+								unset($payments[$idx]);
+							}
+						}
+
+						$query->rows = $payments;
+					}
+
+					//echo '<pre>'.__METHOD__.' ['.__LINE__.']: '; print_r($rules); echo '</pre>';
+					//echo '<pre>'.__METHOD__.' ['.__LINE__.']: '; print_r($this->session->data['shipping_method']); echo '</pre>';
+					//echo '<pre>'.__METHOD__.' ['.__LINE__.']: '; print_r($query->rows); echo '</pre>';
+				}
+			]]></add>
+		</operation>
+	</file>
+</modification>
