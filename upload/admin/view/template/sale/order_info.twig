@@ -128,34 +128,35 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <td style="width: 50%;" class="text-left">{{ text_payment_address }}</td>
+              <td style="width: 33%;" class="text-left">{{ text_payment_address }}</td>
+              <td style="width: 33%;" class="text-left">{{ text_legal_entities_info }}</td>
               {% if shipping_method %}
-              <td style="width: 50%;" class="text-left">{{ text_shipping_address }}</td>
+              <td style="width: 33%;" class="text-left">{{ text_shipping_address }}</td>
               {% endif %} </tr>
           </thead>
           <tbody>
             <tr>
               <td class="text-left">{{ payment_address }}</td>
               <td class="text-left">
-                {{ text_vat }}: {{ legal_entities.vat ? legal_entities.vat : "Не работает с НДС" }} <br>
-                {{ text_legal_entity_form }}:
+                <b>{{ text_vat }}:</b> {{ legal_entities.vat ? "Работает с НДС" : "Не работает с НДС" }} <br>
+                <b>{{ text_legal_entity_form }}:</b>
                 {% if legal_entities.legal_entity_form == "1" %}
                   OOO
                 {% elseif legal_entities.legal_entity_form == "2" %}
                   AO
                 {% endif %} <br>
-                {{ text_organization }}: {{ legal_entities.organization }} <br>
-                {{ text_index }}: {{ legal_entities.index }} <br>
-                {{ text_legal_address }}: {{ legal_entities.legal_address }} <br>
-                {{ text_mailing_address }}: {{ legal_entities.mailing_address }} <br>
-                {{ text_inn }}: {{ legal_entities.inn }} <br>
-                {{ text_kpp }}: {{ legal_entities.kpp }} <br>
-                {{ text_current_account_number }}: {{ legal_entities.current_account_number }} <br>
-                {{ text_bank_name }}: {{ legal_entities.bank_name }} <br>
-                {{ text_bic }}: {{ legal_entities.bic }} <br>
-                {{ text_bank_correspondent_account }}: {{ legal_entities.bank_correspondent_account }} <br>
-                {{ text_head_fullname }}: {{ legal_entities.head_fullname }} <br>
-                {{ text_business_registration }}: {{ legal_entities.business_registration ? legal_entities.business_registration : "Не зарегистрированы в Netto Net для бизнеса" }} <br>
+                <b>{{ text_organization }}:</b> {{ legal_entities.organization }} <br>
+                <b>{{ text_index }}:</b> {{ legal_entities.index }} <br>
+                <b>{{ text_legal_address }}:</b> {{ legal_entities.legal_address }} <br>
+                <b>{{ text_mailing_address }}:</b> {{ legal_entities.mailing_address }} <br>
+                <b>{{ text_inn }}:</b> {{ legal_entities.inn }} <br>
+                <b>{{ text_kpp }}:</b> {{ legal_entities.kpp }} <br>
+                <b>{{ text_current_account_number }}:</b> {{ legal_entities.current_account_number }} <br>
+                <b>{{ text_bank_name }}:</b> {{ legal_entities.bank_name }} <br>
+                <b>{{ text_bic }}:</b> {{ legal_entities.bic }} <br>
+                <b>{{ text_bank_correspondent_account }}:</b> {{ legal_entities.bank_correspondent_account }} <br>
+                <b>{{ text_head_fullname }}:</b> {{ legal_entities.head_fullname }} <br>
+                <b>{{ text_business_registration }}:</b> {{ legal_entities.business_registration ? "Есть" : "Отсутствует" }} <br>
               </td>
               {% if shipping_method %}
               <td class="text-left">{{ shipping_address }}</td>
