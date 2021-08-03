@@ -464,6 +464,18 @@ class ControllerExtensionQuickCheckoutConfirm extends Controller {
 				$price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				$total = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
 
+                $this->load->model('catalog/category');
+                $this->load->model('catalog/product');
+                $getCategories = $this->model_catalog_product->getCategories($product['product_id']);
+                $category = array_shift($getCategories);
+                $category_info = $this->model_catalog_category->getCategoryPath($category['category_id']);
+
+                if ($category_info['path_id'] != $category_info['category_id']) {
+                    $product_link = $this->url->link('product/product', 'path=' . $category_info['path_id'] . '_' . $category_info['category_id'] . '&product_id=' . $product['product_id']);
+                } else {
+                    $product_link = $this->url->link('product/product', 'path=' . $category_info['category_id'] . '&product_id=' . $product['product_id']);
+                }
+
 				$data['products'][] = array(
 					'key'        => isset($product['key']) ? $product['key'] : $product['cart_id'],
 					'cart_id'	 => isset($product['cart_id']) ? $product['cart_id'] : $product['key'],
@@ -476,7 +488,7 @@ class ControllerExtensionQuickCheckoutConfirm extends Controller {
 					'subtract'   => $product['subtract'],
 					'price'      => $price,
 					'total'      => $total,
-					'href'       => $this->url->link('product/product', 'product_id=' . $product['product_id']),
+					'href'       => $product_link,
 				);
 			}
 
